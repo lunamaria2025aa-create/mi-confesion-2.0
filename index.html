@@ -82,7 +82,7 @@ animation:beat 1s infinite;
 
 #message{
 position:absolute;
-top:55%;
+top:60%;
 font-size:40px;
 display:none;
 letter-spacing:5px;
@@ -105,5 +105,76 @@ height:1px;
 <input type="password" id="code">
 <br>
 <button onclick="enter()">Entrar</button>
-</d
+</div>
+
+<div id="bigHeart">❤️</div>
+<div id="message">MITSUAYA</div>
+
+<iframe id="player" allow="autoplay"></iframe>
+
+<script>
+
+/* ESTRELLAS */
+
+for(let i=0;i<120;i++){
+let star=document.createElement("div");
+star.className="star";
+star.style.left=Math.random()*100+"vw";
+star.style.top=Math.random()*100+"vh";
+document.body.appendChild(star);
+}
+
+/* CORAZONES FLOTANDO */
+
+setInterval(()=>{
+let h=document.createElement("div");
+h.className="floatHeart";
+h.innerHTML="❤";
+h.style.left=Math.random()*100+"vw";
+document.body.appendChild(h);
+
+setTimeout(()=>{
+h.remove();
+},6000);
+
+},800);
+
+/* FUNCION DEL CODIGO */
+
+function enter(){
+
+let code=document.getElementById("code").value.trim();
+
+if(code==="143"){
+
+document.getElementById("login").style.display="none";
+
+document.getElementById("player").src=
+"https://www.youtube.com/embed/ntdwWKaGaPQ?autoplay=1&loop=1&playlist=ntdwWKaGaPQ";
+
+let heart=document.getElementById("bigHeart");
+let msg=document.getElementById("message");
+
+heart.style.display="block";
+
+setTimeout(()=>{
+msg.style.display="block";
+},2000);
+
+setTimeout(()=>{
+heart.style.transform="scale(3)";
+},6000);
+
+}else{
+
+alert("Código incorrecto 💔");
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
 ```

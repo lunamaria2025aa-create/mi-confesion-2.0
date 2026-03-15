@@ -19,7 +19,7 @@ overflow:hidden;
 text-align:center;
 }
 
-/* texto inicial */
+/* texto */
 
 #text{
 position:absolute;
@@ -85,7 +85,7 @@ letter-spacing:6px;
 opacity:0;
 }
 
-/* partículas corazón */
+/* partículas */
 
 .particle{
 position:absolute;
@@ -131,7 +131,7 @@ document.body.appendChild(s)
 /* API YouTube */
 
 var tag=document.createElement('script')
-tag.src="https://youtu.be/QESagb08FYs?si=hhPyU5bB2AGPaJQS"
+tag.src="https://www.youtube.com/iframe_api"
 document.head.appendChild(tag)
 
 var player
@@ -140,12 +140,12 @@ function onYouTubeIframeAPIReady(){
 player=new YT.Player('player',{
 height:'1',
 width:'1',
-videoId:'ApXoWvfEYVU',
+videoId:'QESagb08FYs',
 playerVars:{
 'autoplay':0,
 'controls':0,
 'loop':1,
-'playlist':'ApXoWvfEYVU'
+'playlist':'QESagb08FYs'
 }
 })
 }
@@ -159,12 +159,12 @@ player.unMute()
 
 let text=document.getElementById("text")
 
-/* paso 1 */
+/* texto 1 */
 
 text.innerHTML="A veces todo parece oscuro..."
 text.style.opacity=1
 
-/* paso 2 */
+/* texto 2 */
 
 setTimeout(()=>{
 text.innerHTML="Pero incluso en la oscuridad..."
@@ -258,7 +258,7 @@ clearInterval(interval)
 
 }
 
-/* empezar historia con click */
+/* iniciar con click */
 
 document.body.addEventListener("click",startStory,{once:true})
 

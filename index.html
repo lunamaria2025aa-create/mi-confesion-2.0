@@ -37,25 +37,92 @@ background:#ff4fa0;
 color:white;
 font-size:16px;
 cursor:pointer;
+transition:0.2s;
+}
+
+button:hover{
+transform:scale(1.08);
 }
 
 .big{
-font-size:38px;
+font-size:36px;
 color:#ff2c8b;
 font-weight:bold;
+text-shadow:0 0 10px #ff7ab6;
 }
+
+/* estrellas */
 
 .star{
 position:absolute;
 width:2px;
 height:2px;
 background:white;
+animation:twinkle 2s infinite alternate;
+}
+
+@keyframes twinkle{
+from{opacity:0.2}
+to{opacity:1}
+}
+
+/* luna */
+
+.moon{
+position:absolute;
+width:120px;
+height:120px;
+background:#fff;
+border-radius:50%;
+top:60px;
+right:80px;
+box-shadow:0 0 40px rgba(255,255,255,0.7);
+}
+
+/* corazones */
+
+.heart{
+position:absolute;
+color:#ff4fa0;
+font-size:20px;
+animation:float 6s linear infinite;
+}
+
+@keyframes float{
+from{transform:translateY(100vh); opacity:1}
+to{transform:translateY(-10vh); opacity:0}
+}
+
+/* estrella fugaz */
+
+.shootingStar{
+position:absolute;
+width:3px;
+height:3px;
+background:white;
+box-shadow:0 0 8px white;
+animation:shoot 2s linear forwards;
+}
+
+@keyframes shoot{
+from{transform:translate(0,0);opacity:1}
+to{transform:translate(-600px,300px);opacity:0}
 }
 
 </style>
 </head>
 
 <body>
+
+<div class="moon"></div>
+
+<!-- música -->
+<iframe id="music"
+width="0"
+height="0"
+src="https://www.youtube.com/embed/ntdwWKaGaPQ?enablejsapi=1"
+allow="autoplay">
+</iframe>
 
 <div class="card" id="game">
 
@@ -68,11 +135,13 @@ background:white;
 
 <script>
 
+/* empezar juego */
+
 function startGame(){
 
 document.getElementById("game").innerHTML=`
 
-<h2>Acertijo 1 🧩</h2>
+<h2>Acertijo 🧩</h2>
 
 <p>¿Qué cosa aparece cuando alguien te manda un mensaje bonito y te hace sonreír?</p>
 
@@ -86,17 +155,65 @@ document.getElementById("game").innerHTML=`
 
 }
 
+/* revisar respuesta */
+
 function check1(){
 
 let r=document.getElementById("r1").value.toLowerCase();
 
 if(r.includes("sonr")){
 
+showStory();
+
+}else{
+
+alert("Pista: pasa en tu cara cuando estás feliz 😊");
+
+}
+
+}
+
+/* historia */
+
+function showStory(){
+
+let iframe=document.getElementById("music");
+
+iframe.src="https://www.youtube.com/embed/ntdwWKaGaPQ?autoplay=1&start=28&loop=1&playlist=ntdwWKaGaPQ";
+
 document.getElementById("game").innerHTML=`
 
-<h2>Bueno... tengo que confesarte algo 💌</h2>
+<h2>Una pequeña historia 🌙</h2>
 
-<p class="big">Me gustas mucho.</p>
+<p>👧 Una chica mirando la luna...</p>
+
+<p>🌙 La luna preguntó: "¿En qué piensas?"</p>
+
+<p>👧 "En alguien que me hace sonreír cuando hablamos..."</p>
+
+<p>🌙 "Entonces deberías decirlo"</p>
+
+<p>👧 "Tal vez tenga miedo..."</p>
+
+<p>🌙 "Las cosas bonitas valen la pena"</p>
+
+<br>
+
+<button onclick="confession()">Continuar</button>
+
+`;
+
+}
+
+/* confesión */
+
+function confession(){
+
+document.getElementById("game").innerHTML=`
+
+<h2>Tengo que confesarte algo 💌</h2>
+
+<p class="big">Me gustas mucho</p>
 
 <p>¿Quieres ser la aya de mi Mitsuki?</p>
 
@@ -106,13 +223,11 @@ document.getElementById("game").innerHTML=`
 
 `;
 
-}else{
-
-alert("Pista: pasa en tu cara cuando estás feliz 😊");
+shootingStar();
 
 }
 
-}
+/* respuestas */
 
 function yes(){
 
@@ -135,6 +250,62 @@ document.getElementById("game").innerHTML=`
 <p>Igual me alegra haberte conocido.</p>
 
 `;
+
+}
+
+/* corazones flotando */
+
+setInterval(()=>{
+
+const heart=document.createElement("div");
+
+heart.className="heart";
+
+heart.innerHTML="❤";
+
+heart.style.left=Math.random()*100+"vw";
+
+heart.style.fontSize=(Math.random()*20+10)+"px";
+
+document.body.appendChild(heart);
+
+setTimeout(()=>heart.remove(),6000);
+
+},400);
+
+/* estrellas */
+
+for(let i=0;i<120;i++){
+
+const star=document.createElement("div");
+
+star.className="star";
+
+star.style.left=Math.random()*100+"vw";
+
+star.style.top=Math.random()*100+"vh";
+
+star.style.animationDuration=(Math.random()*2+1)+"s";
+
+document.body.appendChild(star);
+
+}
+
+/* estrella fugaz */
+
+function shootingStar(){
+
+const s=document.createElement("div");
+
+s.className="shootingStar";
+
+s.style.left="80vw";
+
+s.style.top="20vh";
+
+document.body.appendChild(s);
+
+setTimeout(()=>s.remove(),2000);
 
 }
 

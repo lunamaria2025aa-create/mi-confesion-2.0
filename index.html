@@ -5,38 +5,49 @@
 <title>Sorpresa ❤️</title>
 
 <style>
+
 body{
-    margin:0;
-    background:black;
-    font-family:Arial;
-    color:white;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-    overflow:hidden;
+margin:0;
+background:black;
+font-family:Arial;
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+overflow:hidden;
 }
 
 #login{
-    text-align:center;
+text-align:center;
 }
 
 input{
-    padding:10px;
-    font-size:16px;
+padding:10px;
+font-size:16px;
 }
 
 button{
-    padding:10px 20px;
-    margin-top:10px;
-    font-size:16px;
+padding:10px 20px;
+margin-top:10px;
+font-size:16px;
+cursor:pointer;
 }
 
 .heart{
-    position:absolute;
-    color:red;
-    font-size:20px;
+position:absolute;
+color:red;
+font-size:22px;
+transition:transform 2s ease;
 }
+
+#player{
+position:absolute;
+width:1px;
+height:1px;
+left:-9999px;
+}
+
 </style>
 </head>
 
@@ -49,31 +60,32 @@ button{
 <button onclick="checkCode()">Entrar</button>
 </div>
 
-<!-- Música -->
-<iframe id="music"
-width="0"
-height="0"
-src="https://youtu.be/ntdwWKaGaPQ?si=CYB_yXpAuOiV4Ytm"
-frameborder="0"
-allow="autoplay"
-style="display:none"></iframe>
+<!-- Video oculto -->
+<iframe id="player"
+src=""
+allow="autoplay">
+</iframe>
 
 <script>
 
 function checkCode(){
 
-const correct="143"; // cambia el código aquí
-const input=document.getElementById("code").value;
+let correct="143";
+let input=document.getElementById("code").value;
 
 if(input===correct){
 
 document.getElementById("login").style.display="none";
-document.getElementById("music").style.display="block";
+
+document.getElementById("player").src =
+"https://www.youtube.com/embed/ntdwWKaGaPQ?autoplay=1&loop=1&playlist=ntdwWKaGaPQ";
 
 createHeart();
 
 }else{
+
 alert("Código incorrecto 💔");
+
 }
 
 }
@@ -98,6 +110,7 @@ heart.style.left=(window.innerWidth/2+x*15)+"px";
 heart.style.top=(window.innerHeight/2-y*15)+"px";
 
 document.body.appendChild(heart);
+
 hearts.push(heart);
 
 }
@@ -105,9 +118,12 @@ hearts.push(heart);
 setTimeout(()=>{
 
 hearts.forEach(h=>{
-let dx=(Math.random()-0.5)*800;
-let dy=(Math.random()-0.5)*800;
+
+let dx=(Math.random()-0.5)*900;
+let dy=(Math.random()-0.5)*900;
+
 h.style.transform=`translate(${dx}px,${dy}px)`;
+
 });
 
 },4000);

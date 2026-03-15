@@ -102,6 +102,11 @@ playerVars:{
 'loop':1,
 'playlist':'s_Ia7RT_v9Q',
 'modestbranding':1
+},
+events:{
+'onReady':function(event){
+event.target.mute(); 
+}
 }
 });
 
@@ -124,6 +129,7 @@ if(code==="143"){
 document.getElementById("login").style.display="none";
 
 player.playVideo();
+player.unMute();
 
 document.getElementById("bigHeart").style.display="block";
 

@@ -1,51 +1,98 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Sorpresa ❤️</title>
+<title>Sorpresa</title>
 
 <style>
 
 body{
 margin:0;
-background:black;
+background:linear-gradient(black,#1a001a);
+overflow:hidden;
 font-family:Arial;
 color:white;
 display:flex;
 justify-content:center;
 align-items:center;
 height:100vh;
-overflow:hidden;
 }
 
 #login{
 text-align:center;
+z-index:10;
 }
 
 input{
 padding:10px;
 font-size:16px;
+border-radius:8px;
+border:none;
 }
 
 button{
 padding:10px 20px;
-margin-top:10px;
 font-size:16px;
+margin-top:10px;
+border:none;
+border-radius:8px;
 cursor:pointer;
+background:#ff4d6d;
+color:white;
 }
 
-.heart{
+.star{
 position:absolute;
-color:red;
-font-size:22px;
-transition:transform 2s ease;
+width:2px;
+height:2px;
+background:white;
+animation:twinkle 2s infinite alternate;
+}
+
+@keyframes twinkle{
+from{opacity:0.2;}
+to{opacity:1;}
+}
+
+.floatHeart{
+position:absolute;
+color:#ff4d6d;
+font-size:20px;
+animation:float 6s linear infinite;
+}
+
+@keyframes float{
+from{transform:translateY(100vh);}
+to{transform:translateY(-10vh);}
+}
+
+#bigHeart{
+position:absolute;
+font-size:120px;
+display:none;
+animation:beat 1s infinite;
+}
+
+@keyframes beat{
+0%{transform:scale(1);}
+50%{transform:scale(1.2);}
+100%{transform:scale(1);}
+}
+
+#message{
+position:absolute;
+top:55%;
+font-size:40px;
+display:none;
+letter-spacing:5px;
 }
 
 #player{
 position:absolute;
+left:-9999px;
 width:1px;
 height:1px;
-left:-9999px;
 }
 
 </style>
@@ -57,80 +104,6 @@ left:-9999px;
 <h2>🔐 Ingresa el código</h2>
 <input type="password" id="code">
 <br>
-<button onclick="checkCode()">Entrar</button>
-</div>
-
-<!-- Video oculto -->
-<iframe id="player"
-src=""
-allow="autoplay">
-</iframe>
-
-<script>
-
-function checkCode(){
-
-let correct="143";
-let input=document.getElementById("code").value;
-
-if(input===correct){
-
-document.getElementById("login").style.display="none";
-
-document.getElementById("player").src =
-"https://www.youtube.com/embed/ntdwWKaGaPQ?autoplay=1&loop=1&playlist=ntdwWKaGaPQ";
-
-createHeart();
-
-}else{
-
-alert("Código incorrecto 💔");
-
-}
-
-}
-
-function createHeart(){
-
-const hearts=[];
-const total=120;
-
-for(let i=0;i<total;i++){
-
-let heart=document.createElement("div");
-heart.className="heart";
-heart.innerHTML="❤";
-
-let t=Math.PI*2*(i/total);
-
-let x=16*Math.pow(Math.sin(t),3);
-let y=13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t);
-
-heart.style.left=(window.innerWidth/2+x*15)+"px";
-heart.style.top=(window.innerHeight/2-y*15)+"px";
-
-document.body.appendChild(heart);
-
-hearts.push(heart);
-
-}
-
-setTimeout(()=>{
-
-hearts.forEach(h=>{
-
-let dx=(Math.random()-0.5)*900;
-let dy=(Math.random()-0.5)*900;
-
-h.style.transform=`translate(${dx}px,${dy}px)`;
-
-});
-
-},4000);
-
-}
-
-</script>
-
-</body>
-</html>
+<button onclick="enter()">Entrar</button>
+</d
+```

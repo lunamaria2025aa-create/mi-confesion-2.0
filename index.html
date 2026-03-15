@@ -9,37 +9,30 @@
 
 body{
 margin:0;
-background:linear-gradient(black,#1a001a);
-overflow:hidden;
-font-family:Arial;
+background:black;
 color:white;
+font-family:Arial;
 display:flex;
 justify-content:center;
 align-items:center;
 height:100vh;
+overflow:hidden;
 }
 
 #login{
 text-align:center;
-z-index:10;
 }
 
 input{
 padding:10px;
 font-size:16px;
-border-radius:8px;
-border:none;
 }
 
 button{
 padding:10px 20px;
-font-size:16px;
 margin-top:10px;
-border:none;
-border-radius:8px;
+font-size:16px;
 cursor:pointer;
-background:#ff4d6d;
-color:white;
 }
 
 .star{
@@ -47,31 +40,13 @@ position:absolute;
 width:2px;
 height:2px;
 background:white;
-animation:twinkle 2s infinite alternate;
-}
-
-@keyframes twinkle{
-from{opacity:0.2;}
-to{opacity:1;}
-}
-
-.floatHeart{
-position:absolute;
-color:#ff4d6d;
-font-size:20px;
-animation:float 6s linear infinite;
-}
-
-@keyframes float{
-from{transform:translateY(100vh);}
-to{transform:translateY(-10vh);}
 }
 
 #bigHeart{
-position:absolute;
 font-size:120px;
 display:none;
 animation:beat 1s infinite;
+position:absolute;
 }
 
 @keyframes beat{
@@ -81,10 +56,10 @@ animation:beat 1s infinite;
 }
 
 #message{
-position:absolute;
-top:60%;
-font-size:40px;
 display:none;
+position:absolute;
+top:65%;
+font-size:40px;
 letter-spacing:5px;
 }
 
@@ -96,15 +71,16 @@ height:1px;
 }
 
 </style>
+
 </head>
 
 <body>
 
 <div id="login">
 <h2>🔐 Ingresa el código</h2>
-<input type="password" id="code">
+<input id="code" type="password" placeholder="Código">
 <br>
-<button onclick="enter()">Entrar</button>
+<button onclick="enterCode()">Entrar</button>
 </div>
 
 <div id="bigHeart">❤️</div>
@@ -114,9 +90,9 @@ height:1px;
 
 <script>
 
-/* ESTRELLAS */
+/* estrellas */
 
-for(let i=0;i<120;i++){
+for(let i=0;i<80;i++){
 let star=document.createElement("div");
 star.className="star";
 star.style.left=Math.random()*100+"vw";
@@ -124,24 +100,15 @@ star.style.top=Math.random()*100+"vh";
 document.body.appendChild(star);
 }
 
-/* CORAZONES FLOTANDO */
+/* permitir presionar ENTER */
 
-setInterval(()=>{
-let h=document.createElement("div");
-h.className="floatHeart";
-h.innerHTML="❤";
-h.style.left=Math.random()*100+"vw";
-document.body.appendChild(h);
+document.getElementById("code").addEventListener("keypress",function(e){
+if(e.key==="Enter"){
+enterCode();
+}
+});
 
-setTimeout(()=>{
-h.remove();
-},6000);
-
-},800);
-
-/* FUNCION DEL CODIGO */
-
-function enter(){
+function enterCode(){
 
 let code=document.getElementById("code").value.trim();
 
@@ -152,18 +119,11 @@ document.getElementById("login").style.display="none";
 document.getElementById("player").src=
 "https://www.youtube.com/embed/ntdwWKaGaPQ?autoplay=1&loop=1&playlist=ntdwWKaGaPQ";
 
-let heart=document.getElementById("bigHeart");
-let msg=document.getElementById("message");
-
-heart.style.display="block";
+document.getElementById("bigHeart").style.display="block";
 
 setTimeout(()=>{
-msg.style.display="block";
+document.getElementById("message").style.display="block";
 },2000);
-
-setTimeout(()=>{
-heart.style.transform="scale(3)";
-},6000);
 
 }else{
 

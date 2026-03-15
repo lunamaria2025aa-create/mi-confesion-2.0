@@ -2,68 +2,117 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Corazón de Corazones</title>
+<title>Sorpresa ❤️</title>
 
 <style>
 body{
     margin:0;
     background:black;
-    overflow:hidden;
+    font-family:Arial;
+    color:white;
     display:flex;
     justify-content:center;
     align-items:center;
     height:100vh;
+    overflow:hidden;
+}
+
+#login{
+    text-align:center;
+}
+
+input{
+    padding:10px;
+    font-size:16px;
+}
+
+button{
+    padding:10px 20px;
+    margin-top:10px;
+    font-size:16px;
 }
 
 .heart{
     position:absolute;
     color:red;
     font-size:20px;
-    transition:transform 1s ease;
 }
 </style>
 </head>
 
 <body>
 
+<div id="login">
+<h2>🔐 Ingresa el código</h2>
+<input type="password" id="code">
+<br>
+<button onclick="checkCode()">Entrar</button>
+</div>
+
 <!-- Música -->
-<iframe width="0" height="0"
-src="https://www.youtube.com/embed/9aofoBrFNdg?autoplay=1&loop=1&playlist=9aofoBrFNdg"
-frameborder="0" allow="autoplay"></iframe>
+<iframe id="music"
+width="0"
+height="0"
+src="https://www.youtube.com/embed/ntdwWKaGaPQ?autoplay=1&loop=1&playlist=ntdwWKaGaPQ"
+frameborder="0"
+allow="autoplay"
+style="display:none"></iframe>
 
 <script>
 
-const hearts = [];
-const total = 120;
+function checkCode(){
+
+const correct="143"; // cambia el código aquí
+const input=document.getElementById("code").value;
+
+if(input===correct){
+
+document.getElementById("login").style.display="none";
+document.getElementById("music").style.display="block";
+
+createHeart();
+
+}else{
+alert("Código incorrecto 💔");
+}
+
+}
+
+function createHeart(){
+
+const hearts=[];
+const total=120;
 
 for(let i=0;i<total;i++){
 
-    let heart = document.createElement("div");
-    heart.className="heart";
-    heart.innerHTML="❤";
+let heart=document.createElement("div");
+heart.className="heart";
+heart.innerHTML="❤";
 
-    let t = Math.PI * 2 * (i/total);
+let t=Math.PI*2*(i/total);
 
-    let x = 16*Math.pow(Math.sin(t),3);
-    let y = 13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t);
+let x=16*Math.pow(Math.sin(t),3);
+let y=13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t);
 
-    heart.style.left = (window.innerWidth/2 + x*15)+"px";
-    heart.style.top = (window.innerHeight/2 - y*15)+"px";
+heart.style.left=(window.innerWidth/2+x*15)+"px";
+heart.style.top=(window.innerHeight/2-y*15)+"px";
 
-    document.body.appendChild(heart);
-    hearts.push(heart);
+document.body.appendChild(heart);
+hearts.push(heart);
+
 }
 
-// explosión después de 3 segundos
 setTimeout(()=>{
 
-    hearts.forEach(h=>{
-        let dx = (Math.random()-0.5)*800;
-        let dy = (Math.random()-0.5)*800;
-        h.style.transform = `translate(${dx}px,${dy}px) scale(0.5)`;
-    });
+hearts.forEach(h=>{
+let dx=(Math.random()-0.5)*800;
+let dy=(Math.random()-0.5)*800;
+h.style.transform=`translate(${dx}px,${dy}px)`;
+});
 
-},3000);
+},4000);
+
+}
 
 </script>
 

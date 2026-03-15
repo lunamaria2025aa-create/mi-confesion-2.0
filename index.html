@@ -35,13 +35,6 @@ font-size:16px;
 cursor:pointer;
 }
 
-.star{
-position:absolute;
-width:2px;
-height:2px;
-background:white;
-}
-
 #bigHeart{
 font-size:120px;
 display:none;
@@ -78,7 +71,7 @@ height:1px;
 
 <div id="login">
 <h2>🔐 Ingresa el código</h2>
-<input id="code" type="password" placeholder="Código">
+<input id="code" type="password">
 <br>
 <button onclick="enterCode()">Entrar</button>
 </div>
@@ -86,21 +79,36 @@ height:1px;
 <div id="bigHeart">❤️</div>
 <div id="message">MITSUAYA</div>
 
-<iframe id="player" allow="autoplay"></iframe>
+<div id="player"></div>
 
 <script>
 
-/* estrellas */
+/* cargar API youtube */
 
-for(let i=0;i<80;i++){
-let star=document.createElement("div");
-star.className="star";
-star.style.left=Math.random()*100+"vw";
-star.style.top=Math.random()*100+"vh";
-document.body.appendChild(star);
+var tag = document.createElement('script');
+tag.src = "https://www.youtube.com/iframe_api";
+document.head.appendChild(tag);
+
+var player;
+
+function onYouTubeIframeAPIReady(){
+
+player = new YT.Player('player', {
+height:'1',
+width:'1',
+videoId:'ntdwWKaGaPQ',
+playerVars:{
+'autoplay':0,
+'controls':0,
+'loop':1,
+'playlist':'ntdwWKaGaPQ',
+'modestbranding':1
+}
+});
+
 }
 
-/* permitir presionar ENTER */
+/* permitir ENTER */
 
 document.getElementById("code").addEventListener("keypress",function(e){
 if(e.key==="Enter"){
@@ -116,8 +124,7 @@ if(code==="143"){
 
 document.getElementById("login").style.display="none";
 
-document.getElementById("player").src=
-"https://www.youtube.com/embed/ntdwWKaGaPQ?autoplay=1&loop=1&playlist=ntdwWKaGaPQ";
+player.playVideo();
 
 document.getElementById("bigHeart").style.display="block";
 

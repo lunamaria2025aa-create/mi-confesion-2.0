@@ -15,25 +15,25 @@ align-items:center;
 height:100vh;
 overflow:hidden;
 color:white;
-
-/* fondo galaxia */
-background:radial-gradient(circle at top,#1a2a6c,#000000);
+background:radial-gradient(circle at top,#1b2a6b,#000000);
 }
 
 /* estrellas */
 
 .star{
 position:absolute;
-width:2px;
-height:2px;
+width:3px;
+height:3px;
 background:white;
-opacity:0.8;
+border-radius:50%;
+opacity:0.9;
 animation:twinkle 2s infinite alternate;
+z-index:0;
 }
 
 @keyframes twinkle{
-from{opacity:0.2;}
-to{opacity:1;}
+0%{opacity:0.2; transform:scale(1);}
+100%{opacity:1; transform:scale(1.3);}
 }
 
 /* luna */
@@ -47,6 +47,7 @@ height:120px;
 background:#f5f3ce;
 border-radius:50%;
 box-shadow:0 0 40px #fff9c4;
+z-index:1;
 }
 
 /* login */
@@ -103,7 +104,6 @@ height:1px;
 }
 
 </style>
-
 </head>
 
 <body>
@@ -126,19 +126,16 @@ height:1px;
 
 /* crear estrellas */
 
-for(let i=0;i<120;i++){
-
+for(let i=0;i<150;i++){
 let star=document.createElement("div");
 star.className="star";
-
 star.style.left=Math.random()*100+"vw";
 star.style.top=Math.random()*100+"vh";
-
+star.style.animationDuration=(Math.random()*3+1)+"s";
 document.body.appendChild(star);
-
 }
 
-/* API YOUTUBE */
+/* cargar API YouTube */
 
 var tag=document.createElement('script');
 tag.src="https://www.youtube.com/iframe_api";
@@ -147,7 +144,6 @@ document.head.appendChild(tag);
 var player;
 
 function onYouTubeIframeAPIReady(){
-
 player=new YT.Player('player',{
 height:'1',
 width:'1',
@@ -159,31 +155,24 @@ playerVars:{
 'playlist':'ApXoWvfEYVU'
 }
 });
-
 }
 
 /* escribir nombre */
 
 function escribirNombre(){
-
 let nombre="MITSUAYA";
 let i=0;
 
 let interval=setInterval(()=>{
-
 document.getElementById("message").innerHTML+=nombre[i];
-
 i++;
-
 if(i>=nombre.length){
 clearInterval(interval);
 }
-
 },200);
-
 }
 
-/* enter */
+/* ENTER */
 
 document.getElementById("code").addEventListener("keypress",function(e){
 if(e.key==="Enter"){
@@ -205,16 +194,12 @@ player.unMute();
 document.getElementById("bigHeart").style.display="block";
 
 setTimeout(()=>{
-
 document.getElementById("message").style.display="block";
 escribirNombre();
-
 },2000);
 
 }else{
-
 alert("Código incorrecto 💔");
-
 }
 
 }

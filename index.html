@@ -2,20 +2,30 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Sorpresa</title>
+<title>Algo que quiero decirte</title>
 
 <style>
 
 body{
 margin:0;
+background:black;
+color:white;
 font-family:Arial;
 display:flex;
 justify-content:center;
 align-items:center;
 height:100vh;
 overflow:hidden;
-color:white;
-background:radial-gradient(circle at top,#1b2a6b,#000000);
+text-align:center;
+}
+
+/* texto inicial */
+
+#text{
+position:absolute;
+font-size:28px;
+opacity:0;
+transition:1.5s;
 }
 
 /* estrellas */
@@ -26,81 +36,73 @@ width:3px;
 height:3px;
 background:white;
 border-radius:50%;
-opacity:0.9;
+opacity:0;
 animation:twinkle 2s infinite alternate;
-z-index:0;
 }
 
 @keyframes twinkle{
-0%{opacity:0.2; transform:scale(1);}
-100%{opacity:1; transform:scale(1.3);}
+0%{opacity:0.2}
+100%{opacity:1}
 }
 
 /* luna */
 
 #moon{
 position:absolute;
-top:40px;
-right:60px;
+top:60px;
+right:80px;
 width:120px;
 height:120px;
 background:#f5f3ce;
 border-radius:50%;
 box-shadow:0 0 40px #fff9c4;
-z-index:1;
-}
-
-/* login */
-
-#login{
-text-align:center;
-z-index:2;
-}
-
-input{
-padding:10px;
-font-size:16px;
-}
-
-button{
-padding:10px 20px;
-margin-top:10px;
-font-size:16px;
-cursor:pointer;
+opacity:0;
+transition:2s;
 }
 
 /* corazón */
 
-#bigHeart{
-font-size:130px;
-display:none;
-animation:beat 1s infinite;
+#heart{
+font-size:120px;
+opacity:0;
 position:absolute;
-z-index:2;
+animation:beat 1s infinite;
 }
 
 @keyframes beat{
-0%{transform:scale(1);}
-50%{transform:scale(1.25);}
-100%{transform:scale(1);}
+0%{transform:scale(1)}
+50%{transform:scale(1.25)}
+100%{transform:scale(1)}
 }
 
-/* mensaje */
+/* nombre final */
 
-#message{
-display:none;
+#name{
 position:absolute;
 top:65%;
-font-size:42px;
+font-size:45px;
 letter-spacing:6px;
-z-index:2;
+opacity:0;
 }
+
+/* partículas corazón */
+
+.particle{
+position:absolute;
+font-size:20px;
+animation:explode 2s forwards;
+}
+
+@keyframes explode{
+0%{transform:translate(0,0);opacity:1}
+100%{transform:translate(var(--x),var(--y));opacity:0}
+}
+
+/* reproductor oculto */
 
 #player{
 position:absolute;
 left:-9999px;
-width:1px;
-height:1px;
 }
 
 </style>
@@ -108,40 +110,31 @@ height:1px;
 
 <body>
 
+<div id="text"></div>
 <div id="moon"></div>
-
-<div id="login">
-<h2>🔐 Ingresa el código</h2>
-<input id="code" type="password">
-<br>
-<button onclick="enterCode()">Entrar</button>
-</div>
-
-<div id="bigHeart">❤️</div>
-<div id="message"></div>
-
+<div id="heart">❤️</div>
+<div id="name"></div>
 <div id="player"></div>
 
 <script>
 
 /* crear estrellas */
 
-for(let i=0;i<150;i++){
-let star=document.createElement("div");
-star.className="star";
-star.style.left=Math.random()*100+"vw";
-star.style.top=Math.random()*100+"vh";
-star.style.animationDuration=(Math.random()*3+1)+"s";
-document.body.appendChild(star);
+for(let i=0;i<120;i++){
+let s=document.createElement("div")
+s.className="star"
+s.style.left=Math.random()*100+"vw"
+s.style.top=Math.random()*100+"vh"
+document.body.appendChild(s)
 }
 
-/* cargar API YouTube */
+/* API YouTube */
 
-var tag=document.createElement('script');
-tag.src="https://www.youtube.com/iframe_api";
-document.head.appendChild(tag);
+var tag=document.createElement('script')
+tag.src="https://www.youtube.com/iframe_api"
+document.head.appendChild(tag)
 
-var player;
+var player
 
 function onYouTubeIframeAPIReady(){
 player=new YT.Player('player',{
@@ -154,55 +147,120 @@ playerVars:{
 'loop':1,
 'playlist':'ApXoWvfEYVU'
 }
-});
+})
+}
+
+/* historia */
+
+function startStory(){
+
+player.playVideo()
+player.unMute()
+
+let text=document.getElementById("text")
+
+/* paso 1 */
+
+text.innerHTML="A veces todo parece oscuro..."
+text.style.opacity=1
+
+/* paso 2 */
+
+setTimeout(()=>{
+text.innerHTML="Pero incluso en la oscuridad..."
+},3000)
+
+/* estrellas */
+
+setTimeout(()=>{
+document.querySelectorAll(".star").forEach(s=>{
+s.style.opacity=1
+})
+},4000)
+
+/* luna */
+
+setTimeout(()=>{
+text.innerHTML="siempre hay algo que brilla."
+document.getElementById("moon").style.opacity=1
+},7000)
+
+/* corazón */
+
+setTimeout(()=>{
+text.innerHTML="Y para mí..."
+let h=document.getElementById("heart")
+h.style.opacity=1
+},10000)
+
+/* explosión */
+
+setTimeout(()=>{
+explodeHeart()
+},13000)
+
+}
+
+/* explosión corazón */
+
+function explodeHeart(){
+
+let heart=document.getElementById("heart")
+heart.style.display="none"
+
+for(let i=0;i<40;i++){
+
+let p=document.createElement("div")
+p.className="particle"
+p.innerHTML="💖"
+
+let x=(Math.random()*600-300)+"px"
+let y=(Math.random()*400-200)+"px"
+
+p.style.setProperty("--x",x)
+p.style.setProperty("--y",y)
+
+p.style.left="50%"
+p.style.top="50%"
+
+document.body.appendChild(p)
+
+}
+
+/* nombre final */
+
+setTimeout(()=>{
+showName()
+},1200)
+
 }
 
 /* escribir nombre */
 
-function escribirNombre(){
-let nombre="MITSUAYA";
-let i=0;
+function showName(){
+
+let name="MITSUAYA"
+let i=0
+let box=document.getElementById("name")
+
+box.style.opacity=1
 
 let interval=setInterval(()=>{
-document.getElementById("message").innerHTML+=nombre[i];
-i++;
-if(i>=nombre.length){
-clearInterval(interval);
-}
-},200);
-}
 
-/* ENTER */
+box.innerHTML+=name[i]
+i++
 
-document.getElementById("code").addEventListener("keypress",function(e){
-if(e.key==="Enter"){
-enterCode();
-}
-});
-
-function enterCode(){
-
-let code=document.getElementById("code").value.trim();
-
-if(code==="143"){
-
-document.getElementById("login").style.display="none";
-
-player.playVideo();
-player.unMute();
-
-document.getElementById("bigHeart").style.display="block";
-
-setTimeout(()=>{
-document.getElementById("message").style.display="block";
-escribirNombre();
-},2000);
-
-}else{
-alert("Código incorrecto 💔");
+if(i>=name.length){
+clearInterval(interval)
 }
 
+},200)
+
 }
+
+/* empezar historia con click */
+
+document.body.addEventListener("click",startStory,{once:true})
 
 </script>
 

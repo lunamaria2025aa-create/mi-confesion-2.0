@@ -2,53 +2,21 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Un pequeño misterio...</title>
+<title>Hay algo que quiero decirte...</title>
 
 <style>
 
 body{
 margin:0;
-font-family:Arial, Helvetica, sans-serif;
-background:linear-gradient(180deg,#0d0221,#240046,#ff8fab);
 height:100vh;
 display:flex;
-align-items:center;
 justify-content:center;
-overflow:hidden;
-}
-
-.card{
-background:white;
-padding:30px;
-border-radius:20px;
-text-align:center;
-max-width:520px;
-box-shadow:0 10px 35px rgba(0,0,0,0.4);
-position:relative;
-z-index:2;
-}
-
-button{
-margin-top:15px;
-padding:12px 22px;
-border:none;
-border-radius:12px;
-background:#ff4fa0;
+align-items:center;
+font-family:Arial;
+background:linear-gradient(#020024,#090979,#000000);
 color:white;
-font-size:16px;
-cursor:pointer;
-transition:0.2s;
-}
-
-button:hover{
-transform:scale(1.08);
-}
-
-.big{
-font-size:36px;
-color:#ff2c8b;
-font-weight:bold;
-text-shadow:0 0 10px #ff7ab6;
+overflow:hidden;
+text-align:center;
 }
 
 /* estrellas */
@@ -58,55 +26,78 @@ position:absolute;
 width:2px;
 height:2px;
 background:white;
-animation:twinkle 2s infinite alternate;
+opacity:0.8;
+animation:parpadeo 2s infinite alternate;
 }
 
-@keyframes twinkle{
-from{opacity:0.2}
-to{opacity:1}
-}
-
-/* luna */
-
-.moon{
-position:absolute;
-width:120px;
-height:120px;
-background:#fff;
-border-radius:50%;
-top:60px;
-right:80px;
-box-shadow:0 0 40px rgba(255,255,255,0.7);
-}
-
-/* corazones */
-
-.heart{
-position:absolute;
-color:#ff4fa0;
-font-size:20px;
-animation:float 6s linear infinite;
-}
-
-@keyframes float{
-from{transform:translateY(100vh); opacity:1}
-to{transform:translateY(-10vh); opacity:0}
+@keyframes parpadeo{
+from{opacity:0.2;}
+to{opacity:1;}
 }
 
 /* estrella fugaz */
 
-.shootingStar{
+.shooting{
 position:absolute;
 width:3px;
 height:3px;
 background:white;
-box-shadow:0 0 8px white;
-animation:shoot 2s linear forwards;
+box-shadow:0 0 10px white;
+animation:shoot 4s linear infinite;
 }
 
 @keyframes shoot{
-from{transform:translate(0,0);opacity:1}
-to{transform:translate(-600px,300px);opacity:0}
+0%{
+transform:translate(-200px,-200px);
+opacity:1;
+}
+100%{
+transform:translate(800px,600px);
+opacity:0;
+}
+}
+
+/* caja */
+
+.box{
+background:rgba(0,0,0,0.5);
+padding:35px;
+border-radius:20px;
+backdrop-filter:blur(6px);
+max-width:600px;
+}
+
+/* botones */
+
+button{
+padding:12px 22px;
+border:none;
+border-radius:25px;
+margin:10px;
+font-size:16px;
+cursor:pointer;
+transition:0.3s;
+}
+
+button:hover{
+transform:scale(1.1);
+}
+
+.si{
+background:#ff4d88;
+color:white;
+}
+
+.no{
+background:#666;
+color:white;
+position:relative;
+}
+
+/* ocultar */
+
+.hidden{
+display:none;
 }
 
 </style>
@@ -114,200 +105,135 @@ to{transform:translate(-600px,300px);opacity:0}
 
 <body>
 
-<div class="moon"></div>
+<audio id="music" loop>
+<source src="https://cdn.pixabay.com/audio/2022/03/15/audio_115b9c6f4b.mp3">
+</audio>
 
-<!-- música -->
-<iframe id="music"
-width="0"
-height="0"
-src="https://www.youtube.com/embed/ntdwWKaGaPQ?enablejsapi=1"
-allow="autoplay">
-</iframe>
+<div class="box">
 
-<div class="card" id="game">
+<div id="inicio">
+<h2>Hola...</h2>
+<p>Hay algo que quiero decirte.</p>
+<button onclick="empezar()">Empezar</button>
+</div>
 
-<h2>Tengo un pequeño juego para ti 🌙</h2>
-<p>Si resuelves los misterios descubrirás algo importante.</p>
+<div id="mensaje" class="hidden">
+<h2 id="texto"></h2>
+<button onclick="siguiente()">Continuar</button>
+</div>
 
-<button onclick="startGame()">Empezar</button>
+<div id="pregunta" class="hidden">
+
+<h2>La verdad es que...</h2>
+<p>me gustas mucho.</p>
+
+<p>¿Te gustaría intentar algo conmigo?</p>
+
+<button class="si" onclick="si()">Sí 💖</button>
+<button class="no" id="no">No</button>
+
+</div>
+
+<div id="final" class="hidden">
+
+<h2>✨ Sabía que eras especial ✨</h2>
+
+<p>
+Prometo que intentaré hacerte sonreír  
+cada vez que pueda.
+</p>
+
+<p>💫</p>
+
+</div>
 
 </div>
 
 <script>
 
-/* empezar juego */
-
-function startGame(){
-
-document.getElementById("game").innerHTML=`
-
-<h2>Acertijo 🧩</h2>
-
-<p>¿Qué cosa aparece cuando alguien te manda un mensaje bonito y te hace sonreír?</p>
-
-<input id="r1" placeholder="Tu respuesta">
-
-<br>
-
-<button onclick="check1()">Responder</button>
-
-`;
-
-}
-
-/* revisar respuesta */
-
-function check1(){
-
-let r=document.getElementById("r1").value.toLowerCase();
-
-if(r.includes("sonr")){
-
-showStory();
-
-}else{
-
-alert("Pista: pasa en tu cara cuando estás feliz 😊");
-
-}
-
-}
-
-/* historia */
-
-function showStory(){
-
-let iframe=document.getElementById("music");
-
-iframe.src="https://www.youtube.com/embed/ntdwWKaGaPQ?autoplay=1&start=28&loop=1&playlist=ntdwWKaGaPQ";
-
-document.getElementById("game").innerHTML=`
-
-<h2>Una pequeña historia 🌙</h2>
-
-<p>👧 Una chica mirando la luna...</p>
-
-<p>🌙 La luna preguntó: "¿En qué piensas?"</p>
-
-<p>👧 "En alguien que me hace sonreír cuando hablamos..."</p>
-
-<p>🌙 "Entonces deberías decirlo"</p>
-
-<p>👧 "Tal vez tenga miedo..."</p>
-
-<p>🌙 "Las cosas bonitas valen la pena"</p>
-
-<br>
-
-<button onclick="confession()">Continuar</button>
-
-`;
-
-}
-
-/* confesión */
-
-function confession(){
-
-document.getElementById("game").innerHTML=`
-
-<h2>Tengo que confesarte algo 💌</h2>
-
-<p class="big">Me gustas mucho</p>
-
-<p>¿Quieres ser la aya de mi Mitsuki?</p>
-
-<button onclick="yes()">Sí 💖</button>
-
-<button onclick="no()">No 🙈</button>
-
-`;
-
-shootingStar();
-
-}
-
-/* respuestas */
-
-function yes(){
-
-document.getElementById("game").innerHTML=`
-
-<h2>Me haces muy feliz 🥹</h2>
-
-<p>Prometo seguir haciéndote sonreír.</p>
-
-`;
-
-}
-
-function no(){
-
-document.getElementById("game").innerHTML=`
-
-<h2>Gracias por ser sincera 💫</h2>
-
-<p>Igual me alegra haberte conocido.</p>
-
-`;
-
-}
-
-/* corazones flotando */
-
-setInterval(()=>{
-
-const heart=document.createElement("div");
-
-heart.className="heart";
-
-heart.innerHTML="❤";
-
-heart.style.left=Math.random()*100+"vw";
-
-heart.style.fontSize=(Math.random()*20+10)+"px";
-
-document.body.appendChild(heart);
-
-setTimeout(()=>heart.remove(),6000);
-
-},400);
-
 /* estrellas */
 
 for(let i=0;i<120;i++){
-
-const star=document.createElement("div");
-
-star.className="star";
-
-star.style.left=Math.random()*100+"vw";
-
-star.style.top=Math.random()*100+"vh";
-
-star.style.animationDuration=(Math.random()*2+1)+"s";
-
-document.body.appendChild(star);
-
+let star=document.createElement("div")
+star.className="star"
+star.style.left=Math.random()*100+"vw"
+star.style.top=Math.random()*100+"vh"
+star.style.animationDuration=(Math.random()*3+1)+"s"
+document.body.appendChild(star)
 }
 
 /* estrella fugaz */
 
-function shootingStar(){
+setInterval(()=>{
+let s=document.createElement("div")
+s.className="shooting"
+s.style.left=Math.random()*100+"vw"
+s.style.top="0px"
+document.body.appendChild(s)
 
-const s=document.createElement("div");
+setTimeout(()=>{s.remove()},4000)
 
-s.className="shootingStar";
+},3000)
 
-s.style.left="80vw";
+/* empezar */
 
-s.style.top="20vh";
+function empezar(){
 
-document.body.appendChild(s);
+document.getElementById("inicio").classList.add("hidden")
+document.getElementById("mensaje").classList.remove("hidden")
 
-setTimeout(()=>s.remove(),2000);
+document.getElementById("music").play()
+
+let texto="Desde hace tiempo quería decirte algo..."
+let i=0
+
+function escribir(){
+
+if(i<texto.length){
+
+document.getElementById("texto").innerHTML+=texto.charAt(i)
+i++
+
+setTimeout(escribir,50)
 
 }
+
+}
+
+escribir()
+
+}
+
+/* siguiente */
+
+function siguiente(){
+
+document.getElementById("mensaje").classList.add("hidden")
+document.getElementById("pregunta").classList.remove("hidden")
+
+}
+
+/* si */
+
+function si(){
+
+document.getElementById("pregunta").classList.add("hidden")
+document.getElementById("final").classList.remove("hidden")
+
+}
+
+/* boton no escapa */
+
+let botonNo=document.getElementById("no")
+
+botonNo.addEventListener("mouseover",()=>{
+
+let x=Math.random()*300-150
+let y=Math.random()*200-100
+
+botonNo.style.transform=`translate(${x}px,${y}px)`
+
+})
 
 </script>
 
